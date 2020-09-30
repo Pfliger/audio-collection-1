@@ -3,8 +3,11 @@ class Track:
         self.name = name
         self.duration = duration
 
-    def show(self):
+    def __str__(self):
         return f'{self.name} - {self.duration} мин'
+
+    def __gt__(self, other):
+        return self.duration > other.duration
 
 
 class Album:
@@ -15,8 +18,14 @@ class Album:
 
     def get_tracks(self):
         for track in self.tracks_list:
-            print(track.show())
+            print(str(track))
         return ' '
+
+    def __str__(self):
+        result = 'Название группы: "' + self.group + '"\nНазвание альбома: "' + self.name + '"\nTracks:'
+        for track in self.tracks_list:
+          result += f'\n{str(track)}'
+        return result
 
     def album_duration(self):
         result = 0
@@ -50,9 +59,7 @@ def show_tracks(albums_list):
       if user_input != album.name:
         continue
       else :
-        print(f'\nАльбом "{album.name}" группа "{album.group}": \nСписок треков: ')
-        print(album.get_tracks())
-        print(f'Общая длительность альбома: {album.album_duration()} минут\n')
+        print(str(album))
         return ' '
     return 'Такого альбома не найдено'
 
@@ -68,6 +75,14 @@ def track_add(albums_list):
             album.add_track(Track(new_track, new_duration))
             return ' '
     return 'Такого альбома не найдено'
+
+# реализация магического метода сравнения
+track1 = Track('Bohemian rhapsody', 6)
+track2 = Track('The show must go on', 4)
+print('track1: ' + str(track1) + '\ntrack2: ' + str(track2))
+print(f'track1 больше чем track2: {track1 > track2} \n')
+
+
 
 def main():
     help = 'Список команд: \nalbum - показывает список всех альбомов \ntracks - выводит список всех треков в альбоме' \
